@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>St Edwards Minecraft Server</title>
+    <style>
+        body {
+            margin:0;
+            background:#0b0f1a;
+            color:white;
+            font-family: Arial;
+            text-align:center;
+        }
+
+        header {
+            padding:40px 20px;
+            background:linear-gradient(#0f172a, #020617);
+        }
+
+        .logo {
+            width:180px;
+        }
+
+        .title {
+            width:400px;
+            max-width:90%;
+        }
+
+        .status {
+            margin-top:20px;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .online { color:#22c55e; }
+        .offline { color:#ef4444; }
+
+        .container {
+            max-width:900px;
+            margin:auto;
+            padding:20px;
+        }
+
+        section {
+            background:#1e293b;
+            margin:20px 0;
+            padding:20px;
+            border-radius:12px;
+            text-align:left;
+        }
+
+        h2 { color:#38bdf8; }
+
+        .ip-box {
+            background:#020617;
+            padding:15px;
+            border-radius:10px;
+            margin-top:15px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" class="logo"><br>
+    <img src="title.png" class="title">
+
+    <div id="status" class="status">Loading...</div>
+
+    <div class="ip-box" onclick="copyIP()">
+        Click to copy IP: play.stedwards.2bd.net
+    </div>
+</header>
+
+<div class="container" id="content"></div>
+
+<script>
+function copyIP() {
+    navigator.clipboard.writeText("play.stedwards.2bd.net");
+    alert("IP copied!");
+}
+
+// Load MODE
+fetch('/mode')
+.then(res => res.text())
+.then(data => {
+    let el = document.getElementById("status");
+    el.innerText = data;
+
+    if (data.toLowerCase().includes("online")) {
+        el.classList.add("online");
+    } else {
+        el.classList.add("offline");
+    }
+});
+
+// Load CONFIG
+fetch('/config')
+.then(res => res.text())
+.then(text => {
+    const lines = text.split('\n');
+    let container = document.getElementById("content");
+    let currentSection = null;
+
+    lines.forEach(line => {
+        line = line.trim();
+
+        if (line.startsWith("#")) {
+            currentSection = document.createElement("section");
+
+            let title = document.createElement("h2");
+            title.innerText = line.replace(/#/g, "").trim();
+
+            currentSection.appendChild(title);
+            container.appendChild(currentSection);
+            return;
+        }
+
+        if (line === "" || line.startsWith("---") || line.startsWith("###")) return;
+
+        if (currentSection) {
+            let p = document.createElement("div");
+            p.innerText = line;
+            currentSection.appendChild(p);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+##############################
+#   ST EDWARDS MC SERVER     #
+##############################
+
+SERVER NAME: St Edwards Minecraft Server
+SERVER IP: play.stedwards.2bd.net
+PORT: 25565
+VERSION: 1.20
+STATUS: ONLINE
+
+------------------------------
+#          FEATURES           #
+------------------------------
+- Custom Plugins: Add yours
+- Discord Integration: YES
+- Whitelist / Verification: YES
